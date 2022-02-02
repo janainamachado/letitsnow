@@ -1,7 +1,7 @@
-require("dotenv").config();
-const mysql = require("mysql");
+import 'dotenv/config'; 
+import mysql from 'mysql';
 
-module.exports = async function db(query) {
+export async function db(query) {
   const results = {
     data: [],
     error: null
