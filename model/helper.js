@@ -1,7 +1,7 @@
 require('dotenv/config'); 
 const mysql = require('mysql');
 
-const db = async function(query) {
+const db = async function db(query) {
   const results = {
     data: [],
     error: null
@@ -12,11 +12,13 @@ const db = async function(query) {
     const DB_PASS = process.env.DB_PASS;
     const DB_NAME = process.env.DB_NAME;
 
+    console.log("DB_PASS", DB_PASS)
+
     const con = mysql.createConnection({
-      host: DB_HOST || "127.0.0.1",
+      host: DB_HOST || "localhost",
       user: DB_USER || "root",
       password: DB_PASS,
-      database: DB_NAME || "database",
+      database: DB_NAME || "weather",
       multipleStatements: true
     });
 
