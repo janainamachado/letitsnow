@@ -1,6 +1,6 @@
-import { db } from "./model/helper.js";
-import express from 'express';
-import fetch from 'node-fetch';
+const db = require("../model/helper");
+var express = require("express");
+const fetch = require('node-fetch');
 import fs from 'fs';
 import mysql from 'mysql';
 
