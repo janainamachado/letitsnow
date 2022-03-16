@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 import fs from 'fs';
 import mysql from 'mysql';
 
-const WEATHER_API_KEY ="560c07ba9ef1687e2676d8acba1e4696"
+const weatherAPI = process.env.WEATHER_API_KEY
 
 function getCitiesByCountry(countryFilter, callback){
     let filtered = []
@@ -25,7 +25,7 @@ async function filterCitiesBySnow(cities){
   let snowedCities = []
   let weather;
   for (const city of cities){
-    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${WEATHER_API_KEY}`)
+    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${weatherAPI}`)
     weather = await response.json();
     if(weather.snow){
       snowedCities.push(weather)
