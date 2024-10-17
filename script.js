@@ -7,9 +7,13 @@ import mysql from 'mysql';
 const weatherAPI = process.env.WEATHER_API_KEY
 
 async function getCitiesByCountry(countryFilter){
-  let data = await fs.readFile('./public/citylist.json');
-  let cities = JSON.parse(data);
-  return cities.filter(city => city.country === countryFilter);
+  try {
+    let data = await fs.readFile('./public/citylist.json');
+    let cities = JSON.parse(data);
+    return cities.filter(city => city.country === countryFilter);
+  } catch (err) {
+      console.error(`Error reading file: ${err.message}`);
+    }
 }
 
 async function filterCitiesBySnow(cities){
