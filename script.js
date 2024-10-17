@@ -1,24 +1,15 @@
 const db = require("../model/helper");
 var express = require("express");
 const fetch = require('node-fetch');
-import fs from 'fs';
+import fs from 'fs/promises';
 import mysql from 'mysql';
 
 const weatherAPI = process.env.WEATHER_API_KEY
 
-function getCitiesByCountry(countryFilter, callback){
-    let filtered = []
-    fs.readFile('./public/citylist.json', (err, data) => {
-      if (err) throw err;
-      let cities = JSON.parse(data);
-
-      for(let i = 0; i < cities.length; i++){
-        if(cities[i].country === countryFilter){
-          filtered.push(cities[i])
-        }
-      } 
-     callback(filtered)
-    })
+async function getCitiesByCountry(countryFilter){
+  let data = await fs.readFile('./public/citylist.json');
+  let cities = JSON.parse(data);
+  return cities.filter(city => city.country === countryFilter);
 }
 
 async function filterCitiesBySnow(cities){
