@@ -13,21 +13,22 @@ async function getCitiesByCountry(countryFilter){
 }
 
 async function filterCitiesBySnow(cities){
-  let snowedCities = []
-  let weather;
-  for (const city of cities)
-    try {
-    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${weatherAPI}`)
-    if (!response.ok) throw new Error(`Failed to fetch weather data for ${city.name}`);
-    weather = await response.json();
-    if(weather.snow){
-      snowedCities.push(weather)
-    }
-  }
-    catch (error) {
-      console.error(`Error fetching weather data: ${error.message}`);
-}
-  return snowedCities 
+  let snowedCities = [];
+    const fetchPromises = cities.map(city => 
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${weatherAPI}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`Failed to fetch weather data for ${city.name}`);
+                return response.json();
+            })
+            .then(weather => {
+                if(weather.snow){
+                    snowedCities.push(weather);
+                }
+            })
+            .catch(error => console.error(`Error fetching weather for ${city.name}: ${error.message}`))
+    );
+    await Promise.all(fetchPromises);
+    return snowedCities;
 }
 
 function saveCitiesList(cities){
